@@ -1,0 +1,6 @@
+Port: 8849
+Debug: true
+Swagger: true
+ReadTimeout: 120
+WriteTimeout: 120
+MaximumUploadFileSize: 20971520
