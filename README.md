@@ -1,5 +1,3 @@
-# gin-projest
-
 ### 冷知识1
 
 mac上关闭某个端口的方法
@@ -406,4 +404,72 @@ env
 ```
 
 ### 11.创建`docker`镜像
+
+使用`golang:1.21-alpine`镜像对程序进行打包
+
+然后copy到`alpine:latest`镜像中
+
+`Dockerfile`
+
+```dockerfile
+FROM golang:1.21-alpine as BUILD
+
+WORKDIR /app
+COPY go.mod .
+COPY go.sum .
+RUN go mod download
+COPY . .
+
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o /app/bin/linux_amd64/main
+
+
+FROM alpine:latest
+# 复制资源
+COPY --from=BUILD /app/config /config
+COPY --from=BUILD /app/bin/linux_amd64/main app/main
+
+# Env设置 - App
+ENV APP_USE_ENV="true"
+ENV APP_PORT=8080
+ENV APP_DEBUG="false"
+ENV APP_FRONTEND_URL="http://www.example.com"
+ENV APP_BACKEND_URL="http://api.example.com"
+
+# 暴露端口
+EXPOSE 8080
+
+ENTRYPOINT ["app/main"]
+```
+
+使用`docker-compose.yml`运行容器
+
+`docker-compose.yml`
+
+```yaml
+version: "3.1"
+
+services:
+  backend:
+    platform: linux/amd64
+    image: yinsiyu/gin-project
+    container_name: gin-project
+    restart: always
+    ports:
+      - "8849:8080"
+```
+
+将命令集合到`Makefile`中
+
+`Makefile`
+
+```makefile
+build-linux-amd64:
+	docker build --platform=linux/amd64 -t yinsiyu/gin-project .
+
+launch-app:
+	docker-compose up -d
+
+image-push:
+	docker push yinsiyu/gin-project
+```
 
