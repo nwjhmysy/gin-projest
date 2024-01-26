@@ -1,0 +1,34 @@
+openapi: 3.0.2
+info:
+    title: gin-api
+    version: openapi.v3
+    description: gin-api
+    contact:
+        name: yinsiyu
+servers:
+    -
+        url: 'http://0.0.0.0:8849/api'
+        description: ''
+paths: {}
+components:
+    schemas:
+        CommonResponse:
+            description: ''
+            required:
+                - message
+                - status
+            type: object
+            properties:
+                message:
+                    description: ''
+                    type: string
+                status:
+                    $ref: '#/components/schemas/ResponseStatus'
+                    description: ''
+        ResponseStatus:
+            description: ''
+            enum:
+                - success
+                - fail
+                - error
+            type: string
