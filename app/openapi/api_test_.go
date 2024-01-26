@@ -14,7 +14,11 @@ import (
 )
 
 type TestAPI struct {
-	// Get /api/test/hello
-	// 
-	Say gin.HandlerFunc
 }
+
+// Get /api/test/hello
+func (api *TestAPI) SayHello(c *gin.Context) {
+	// Your handler implementation
+	c.JSON(200, gin.H{"status": "OK"})
+}
+

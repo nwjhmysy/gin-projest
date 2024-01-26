@@ -7,7 +7,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func SayHello(ctx *gin.Context) {
+type TestAPI struct {
+	openapi.TestAPI
+}
+
+// 重写 test 标签的方法
+func (api *TestAPI) SayHello(ctx *gin.Context) {
 	resp := response.Gin{Ctx: ctx}
 
 	commonResponse := openapi.CommonResponse{
@@ -18,7 +23,4 @@ func SayHello(ctx *gin.Context) {
 	resp.Success(commonResponse)
 }
 
-// test相关api
-var TestApi = &openapi.TestAPI{
-	Say: SayHello,
-}
+var TestApi TestAPI

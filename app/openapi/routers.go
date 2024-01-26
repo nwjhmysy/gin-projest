@@ -63,13 +63,12 @@ type ApiHandleFunctions struct {
 }
 
 func getRoutes(handleFunctions ApiHandleFunctions) []Route {
-	return []Route{
-	
+	return []Route{ 
 		{
-			"Say",
+			"SayHello",
 			http.MethodGet,
 			"/api/test/hello",
-			handleFunctions.TestAPI.Say,
+			handleFunctions.TestAPI.SayHello,
 		},
 	}
 }
