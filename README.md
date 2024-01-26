@@ -473,3 +473,73 @@ image-push:
 	docker push yinsiyu/gin-project
 ```
 
+### 12.`open-api`
+
+使用`api.yaml`规范`API`
+
+使用`docker`镜像 ——`openapitools/openapi-generator-cli:Tag`
+
+`docker-compose.api.yml`
+
+```yml
+version: '3'
+services:
+  openapi-generator-cli:
+    image: openapitools/openapi-generator-cli:v7.2.0
+    command:
+      [
+        'generate',
+        '-i',
+        './tmp/src/openapi.v3.yaml',
+        '-o',
+        'tmp/dist',
+        '-g',
+        'go-gin-server',
+        '--additional-properties=packageName=openapi,withGoCodegenComment=true,apiPath=openapi,enumClassPrefix=true',
+      ]
+    volumes:
+      - ./gin-api:/tmp/src
+      - ./app:/tmp/dist
+
+```
+
+创建`openapi.v3.yaml`文件，通过`openapi-generator`容器生成所需的结构体，路由等等
+
+创建`/app/gin-api/openapi.v3.yaml`
+
+使用软件——`APICurito`编辑yaml文件
+
+创建`.openapi-generator-ignore`忽略`openapi-generator`对其他文件的修改
+
+`/app/.openapi-generator-ignore`
+
+```
+api/*
+Dockerfile
+go.mod
+main.go
+/openapi/*.md
+```
+
+### 13.整理`Makefile`
+
+重新命名文件`docker-compose.yml`
+
+`docker-compose.yml`——>`docker-compose.app.yml`
+
+`Makefile`
+
+```makefile
+generate-api:
+	docker-compose -f docker-compose.api.yml run --rm openapi-generator-cli
+
+build-linux-amd64:
+	docker build --platform=linux/amd64 -t yinsiyu/gin-project .
+
+launch-app:
+	docker-compose -f docker-compose.app.yml up -d
+
+image-push:
+	docker push yinsiyu/gin-project
+```
+
