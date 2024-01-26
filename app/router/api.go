@@ -12,7 +12,7 @@ func SetupApiRouter(engine *gin.Engine) {
 
 	// test
 	testApiRouter := apiRouter.Group("/test", middleware.ParamFilter)
-	testApiRouter.GET("/hello", controller.SayHello)
+	testApiRouter.GET("/hello", controller.TestApi.Say)
 
 	// auth
 

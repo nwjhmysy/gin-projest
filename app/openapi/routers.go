@@ -58,10 +58,18 @@ func DefaultHandleFunc(c *gin.Context) {
 
 type ApiHandleFunctions struct {
 
+	// Routes for the TestAPI part of the API
+	TestAPI TestAPI
 }
 
 func getRoutes(handleFunctions ApiHandleFunctions) []Route {
 	return []Route{
 	
+		{
+			"Say",
+			http.MethodGet,
+			"/api/test/hello",
+			handleFunctions.TestAPI.Say,
+		},
 	}
 }

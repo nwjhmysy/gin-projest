@@ -9,7 +9,27 @@ servers:
     -
         url: 'http://0.0.0.0:8849/api'
         description: ''
-paths: {}
+paths:
+    /test/hello:
+        get:
+            tags:
+                - test
+            parameters:
+                -
+                    name: value
+                    description: ''
+                    schema:
+                        type: integer
+                    in: query
+                    required: false
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CommonResponse'
+                    description: 请求成功
+            operationId: Say
 components:
     schemas:
         CommonResponse:
@@ -32,3 +52,7 @@ components:
                 - fail
                 - error
             type: string
+tags:
+    -
+        name: test
+        description: 测试用接口

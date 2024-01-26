@@ -17,3 +17,8 @@ func SayHello(ctx *gin.Context) {
 
 	resp.Success(commonResponse)
 }
+
+// test相关api
+var TestApi = &openapi.TestAPI{
+	Say: SayHello,
+}
